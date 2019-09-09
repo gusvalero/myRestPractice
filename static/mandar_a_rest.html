@@ -1,0 +1,139 @@
+<html>
+<head>
+<title>Facilidad para peticiones Rest (para no bajar postman)</title>
+<style>
+ * {
+	-webkit-box-sizing: border-box;     box-sizing: border-box;
+    padding: 0px;                       margin:0px;
+}
+body {
+    background-color: LightGray;      background-repeat: no-repeat, repeat;
+    background-size: cover;             z-index: -30;
+}
+.navbar{
+    width: 100%;    background-color: black;    color: white;
+    opacity: 0.6;   z-index: 998;                 position: fixed;
+    top: 0px;       height: 50px;                 box-shadow: 2px 2px 4px 0px black;
+    padding-left: 25%;
+}
+input[type=text], select {
+    width: 100%;              padding: 12px 20px;             margin: 8px 0;
+    display: inline-block;    border: 1px solid #ccc;       border-radius: 4px;
+    box-sizing: border-box;   background-color:  white; 
+}
+input[type=button] {
+    width: 100%;              background-color: #4CAF50;    color: white;
+    padding: 14px 20px;       margin: 8px 0;                  border: none;
+    border-radius: 4px;       cursor: pointer;
+}
+input[type=buton]:hover {
+    background-color: #45a049;
+}
+.contenedorBloques{
+    width: 100%;     display: flex;
+}
+.bloque{
+    width: 50%;     margin: 25px;    display: inline-block;
+}
+.responseText{
+    background-color: white;    color: black;     
+    min-height: 200px;      padding: 6px;
+}
+
+</style>
+</head>
+<body class="imagenDeFondo">
+    <div class="navbar">
+        <h1 style="margin-left: 15px; margin-top: 5px;">Peticiones a servicio REST</h1>     
+    </div>
+    <section style="margin-top: 60px;">
+        <div class="contenedorBloques">
+            <div class="bloque">
+                <form id="formulario1">
+                    <label for="method1">Primer caso, favor seleccionar method:</label>
+                    <select id="method1" name="method">
+                        <option value="GET">GET  (read)</option>
+                        <option value="POST">POST  (create)</option>
+                        <option value="PUT">PUT  (update)</option>
+                        <option value="DELETE">DELETE  (delete)</option>
+                    </select>
+                    <br><br>
+                
+                    <label for="fname">Nombre de dominio</label>
+                    <input type="text" id="archivo1" name="archivo" placeholder="http://localhost:8080" value="http://localhost:8080">
+                  
+                    <label for="lname">URI</label>
+                    <input type="text" id="uri1" name="uri" placeholder="/ejemplo" value="/ejemplo">
+                    
+                    <label for="lname">JSON</label>
+                    <input type="text" id="data1" name="data"  value="">
+                  
+                    <input type="button" value="Submit" onclick="enviarPeticion('1')">
+                </form>
+                <p style="margin-top: 24px;">Response primer caso:</p>
+                <div class="responseText" id="responseText1">
+
+                </div>
+            </div>
+            <div class="bloque">
+                <form id="formulario2">
+                    <label for="method2">Segundo caso, favor seleccionar method:</label>
+                    <select id="method2" name="method">
+                        <option value="POST">POST  (create)</option>
+                        <option value="GET">GET  (read)</option>
+                        <option value="PUT">PUT  (update)</option>
+                        <option value="DELETE">DELETE  (delete)</option>
+                    </select>
+                    <br><br>
+                
+                    <label for="fname">Nombre de dominio</label>
+                    <input type="text" id="archivo2" name="archivo" placeholder="http://localhost:8080" value="http://localhost:8080">
+                  
+                    <label for="lname">URI</label>
+                    <input type="text" id="uri2" name="uri" placeholder="/ejemplo3" value="/ejemplo3">
+                  
+                    <label for="lname">JSON</label>
+                    <input type="text" id="data2" name="data"  value='{"nombre":"gustavo","apellido":"valero"}'>
+                  
+                    <input type="button" value="Submit" onclick="enviarPeticion('2')">
+                </form>
+                <p style="margin-top: 24px;">Response segundo caso:</p>
+                <div class="responseText" id="responseText2">
+                        
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+    <script >
+       enviarPeticion = (nodoID) => 
+       {
+        let methodNodo = document.getElementById("method"+nodoID).value;
+        let archivoNodo = document.getElementById("archivo"+nodoID).value;
+        let uriNodo = document.getElementById("uri"+nodoID).value;
+        let jsonNodo = document.getElementById("data"+nodoID).value;
+        var xhttp = new XMLHttpRequest();
+
+        console.log("Se envia: "+archivoNodo+uriNodo+" en method: "+methodNodo)
+
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("responseText"+nodoID).innerHTML = this.responseText;
+            }
+        };
+        xhttp.open(methodNodo, archivoNodo+uriNodo, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        //xhttp.send("nombre=Henry&apellido=Ford");
+        if(methodNodo == "GET"){
+            xhttp.send();
+        } else {
+            xhttp.send(jsonNodo);
+
+        }
+
+       }
+    
+    </script>
+</body>
+</html>
