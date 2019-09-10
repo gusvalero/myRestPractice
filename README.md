@@ -1,5 +1,5 @@
 # myRestPractice
-Practica usando la arquitectura REST con python y Flask
+Practica usando la arquitectura REST
 
 REQUISITOS:
 1) python
